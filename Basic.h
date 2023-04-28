@@ -12,7 +12,7 @@ struct BasicDictionary
 };
 double calculateDifference();
 int updateR(int, double);
-BasicDictionary *convert();
+BasicDictionary *basic_convert();
 void storeWhole(BasicDictionary *);
 BasicDictionary *sort(BasicDictionary *);
 void storeTop100(BasicDictionary *);

@@ -93,7 +93,7 @@ int updateR(int round, double Beta)
 }
 
 // 映射列向量R的计算结果
-BasicDictionary *convert()
+BasicDictionary *basic_convert()
 {
     BasicDictionary *D = new BasicDictionary[counts];
     int index = 0;
@@ -237,11 +237,11 @@ void runBasic()
     updateR(round, Beta);
 
     // 创建结果文件夹
-    system("cd Data");
-    system("mkdir BasicResults");
+    string command = "mkdir .\\Data\\BasicResults";
+    system(command.c_str());
 
     // 将列向量R的计算结果保存到字典
-    BasicDictionary *D = convert();
+    BasicDictionary *D = basic_convert();
 
     // 保存全部结果
     storeWhole(D);

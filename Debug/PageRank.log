@@ -1,4 +1,5 @@
-﻿  Basic.cpp
-F:\Environment\Visual Studio\PageRank\Basic.cpp(37,19): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
-F:\Environment\Visual Studio\PageRank\Basic.cpp(93): warning C4715: “updateR”: 不是所有的控件路径都返回值
+﻿  Block.cpp
+F:\Environment\Visual Studio\PageRank\Block.cpp(142,20): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+F:\Environment\Visual Studio\PageRank\Block.cpp(30): warning C4715: “getDegree”: 不是所有的控件路径都返回值
+F:\Environment\Visual Studio\PageRank\Block.cpp(226): warning C4715: “updateR”: 不是所有的控件路径都返回值
   PageRank.vcxproj -> F:\Environment\Visual Studio\PageRank\Debug\PageRank.exe

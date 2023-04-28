@@ -6,7 +6,6 @@
 #include <math.h>
 #include <string.h>
 #include "Block.h"
-#include "store.h"
 using namespace std;
 
 #define BLOCKSIZE 100
@@ -59,7 +58,7 @@ void divide(const char *dataFile)
     // 创建文件存储分块和矩阵
     fstream *fo = new fstream[block_num];
     fstream *fi = new fstream[block_num];
-    system("mkdir /Data/Blocks");
+    system("mkdir .\\Data\\Blocks");
     cout << "创建文件...";
     for (i = 0; i < block_num; i++)
     {
@@ -121,12 +120,8 @@ double calculateDifference_()
 {
     double difference = 0.0;
     for (int i = 0; i < 8298; i++)
-    {
         if (isolate_[i] == 1)
-        {
             difference += (double)fabs(R_new_[i] - R_old_[i]);
-        }
-    }
     return difference;
 }
 
@@ -137,7 +132,6 @@ int updateR(int round)
     int from, to, degree;
     double R_i, add, sum, revise, difference;
     char buffer[1024];
-
     cout << "===============第" << round << "轮===============" << endl;
     // 初始化新一轮的R向量
     memset(R_new_, 0.0, sizeof(double) * 8298);
@@ -172,30 +166,18 @@ int updateR(int round)
     // 计算修正前的总得分
     sum = 0.0;
     for (int i = 0; i < 8298; i++)
-    {
         if (isolate_[i] == 1)
-        {
             sum += R_new_[i];
-        }
-    }
     // 完成公式后一半运算
     revise = (1 - sum) / (double)counts_;
     for (int i = 0; i < 8298; i++)
-    {
         if (isolate_[i] == 1)
-        {
             R_new_[i] += revise;
-        }
-    }
     // 计算修正后的总得分
     sum = 0.0;
     for (int i = 0; i < 8298; i++)
-    {
         if (isolate_[i] == 1)
-        {
             sum += R_new_[i];
-        }
-    }
     cout << "本轮迭代结束时总得分为：" << sum << endl;
     // 判断是否要继续迭代
     difference = calculateDifference_();
@@ -215,15 +197,84 @@ int updateR(int round)
         cout << "保存本轮计算的R向量到： " << buffer << endl
              << endl;
         for (int i = 0; i < 8298; i++)
-        {
             fo.write((char *)&R_new_[i], sizeof(R_new_[i]));
-        }
         fo.close();
         // 更新R_old_
         memcpy(R_old_, R_new_, sizeof(double) * 8298);
         // 递归迭代
         updateR(round);
     }
+}
+
+// 将列向量R的计算结果保存到字典
+BlockDictionary* block_convert()
+{
+    BlockDictionary* D = new BlockDictionary[counts_];
+    int index = 0;
+    for (int i = 0; i < 8298; i++)
+    {
+        if (isolate_[i] == 1)
+        {
+            D[index].id = i;
+            D[index].score = R_old_[i];
+            index++;
+        }
+    }
+    return D;
+}
+
+// 保存全部结果
+void storeWhole(BlockDictionary* D)
+{
+    ofstream fwhole("./Data/BlockResults/Whole.txt", ios::out | ios::trunc);
+    for (int i = 0; i < counts_; i++)
+    {
+        if (i == counts_ - 1)
+        {
+            fwhole << D[i].id << "\t" << D[i].score;
+            break;
+        }
+        fwhole << D[i].id << "\t" << D[i].score << endl;
+    }
+    fwhole.close();
+}
+
+// 降序排序
+BlockDictionary* sort(BlockDictionary* D)
+{
+    for (int i = 0; i < counts_; i++)
+    {
+        for (int j = i + 1; j < counts_; j++)
+        {
+            if (D[i].score < D[j].score)
+            {
+                BlockDictionary tmp;
+                tmp.id = D[i].id;
+                tmp.score = D[i].score;
+                D[i].id = D[j].id;
+                D[i].score = D[j].score;
+                D[j].id = tmp.id;
+                D[j].score = tmp.score;
+            }
+        }
+    }
+    return D;
+}
+
+// 保存前100的结果
+void storeTop100(BlockDictionary* D)
+{
+    ofstream f100("./Data/BlockResults/Top100.txt", ios::out | ios::trunc);
+    for (int i = 0; i < 100; i++)
+    {
+        if (i == 99)
+        {
+            f100 << D[i].id << "\t" << D[i].score;
+            break;
+        }
+        f100 << D[i].id << "\t" << D[i].score << endl;
+    }
+    f100.close();
 }
 
 void runBlock()
@@ -294,7 +345,7 @@ void runBlock()
             R_old_[i] = 0.0;
         }
     }
-    system("mkdir /Data/Dat");
+    system("mkdir .\\Data\\Dat");
     ofstream fo("./Data/Dat/R00.dat", ios::out | ios::binary | ios::trunc);
     for (int i = 0; i < 8298; i++)
     {
@@ -308,10 +359,10 @@ void runBlock()
     updateR(round);
 
     // 创建结果文件夹
-    system("mkdir /Data/BlockResults");
+    system("mkdir .\\Data\\BlockResults");
 
     // 将列向量R的计算结果保存到字典
-    BlockDictionary *D = convert();
+    BlockDictionary *D = block_convert();
 
     // 保存全部结果
     storeWhole(D);

@@ -24,9 +24,6 @@
     <ClInclude Include="DataAnalyzer.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="store.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Basic.cpp">
@@ -39,9 +36,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="PageRank.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="store.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

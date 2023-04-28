@@ -22,14 +22,12 @@
     <ClInclude Include="Basic.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="DataAnalyzer.h" />
-    <ClInclude Include="store.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Basic.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="DataAnalyzer.cpp" />
     <ClCompile Include="PageRank.cpp" />
-    <ClCompile Include="store.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
